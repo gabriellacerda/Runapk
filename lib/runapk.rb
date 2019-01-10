@@ -60,11 +60,12 @@ def compiler(doc, mode)
 
     phrase "Iniciando processo de assinatura do apk"
     cmd("(jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore #{keystore_path} #{path} alias_name)")
+
+    phrase "Comprimindo app"
+    cmd("(zipalign  -v 4 #{path} #{app_name_export}.apk)")
+  else
+    cmd("(mv #{path} #{app_name_export}.apk)")
   end
-
-  phrase "Comprimindo app"
-
-  cmd("(zipalign -f -v 4 #{path} #{app_name_export}.apk)")
   phrase_simple ""
   phrase_simple "Seu app está pronto!"
   phrase_simple "Basta navegar a pasta raiz do seu projeto ionic"
@@ -113,11 +114,12 @@ def compiler_en(doc, mode)
 
     phrase "Starting the apk signing process"
     cmd("(jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore #{keystore_path} #{path} alias_name)")
+
+    phrase "Compressing app"
+    cmd("(zipalign  -v 4 #{path} #{app_name_export}.apk)")
+  else
+    cmd("(mv #{path} #{app_name_export}.apk)")
   end
-
-  phrase "Compressing app"
-
-  cmd("(zipalign -f -v 4 #{path} #{app_name_export}.apk)")
   phrase_simple ""
   phrase_simple "Your app is ready!"
   phrase_simple "Just browse the root folder of your ionic project"
