@@ -51,29 +51,7 @@ gem install Runapk
 keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-<<<<<<< HEAD
 2. In your project root folder run
-=======
-3. Create a ``runapk.yml`` in your ionic app root folder with these contents:
-```yaml
-app:                       # App specific information
-  name: 'App Name'           # Your App name
-  version: '1.0.0'           # Your App version
-  location: ''               # Your App location
-android:                   # Platform specific information
-  version: '5.0.0'           # Your Android version
-sign:                      # App sign specific information
-  path: 'demo.keystore'      # Path to your keystore
-ionic:                     # Ionic specific information
-  version: 1                 # Your ionic version, versions 1,2,3 => for ionic 4 use 3 option
-output:                    # Output specific information
-  path: '~/Desktop'          # Your app output path
-```
-
-> Replace these properties according to your project
-
-4. In your project root folder run
->>>>>>> 3cc2c25f0ce5fb1ca03ba14e8551cbaeaca85ce5
 
 ```
 runapk
