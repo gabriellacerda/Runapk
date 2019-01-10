@@ -64,7 +64,7 @@ def compiler(doc, mode)
 
   phrase "Comprimindo app"
 
-  cmd("(zipalign  -v 4 #{path} #{app_name_export}.apk)")
+  cmd("(zipalign -f -v 4 #{path} #{app_name_export}.apk)")
   phrase_simple ""
   phrase_simple "Seu app está pronto!"
   phrase_simple "Basta navegar a pasta raiz do seu projeto ionic"
@@ -117,7 +117,7 @@ def compiler_en(doc, mode)
 
   phrase "Compressing app"
 
-  cmd("(zipalign  -v 4 #{path} #{app_name_export}.apk)")
+  cmd("(zipalign -f -v 4 #{path} #{app_name_export}.apk)")
   phrase_simple ""
   phrase_simple "Your app is ready!"
   phrase_simple "Just browse the root folder of your ionic project"
