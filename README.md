@@ -25,7 +25,7 @@ Just run ``runapk`` :D and you're ready to go!
 ## Installation
 ### Supported OS
 - Mac
-- Windows
+- Windows 10 (Using linux kernel)
 - Linux
 ### Requirements
 - Cordova
