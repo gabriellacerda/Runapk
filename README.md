@@ -31,8 +31,8 @@ Just run ``runapk`` :D and you're ready to go!
 - Cordova
 - Ionic CLI
 - Ruby
-- Jarsigner (Install java sdk, add it to your path and you be fine)
-- Zipalign (Install android sdk, add a build tools version folder to your path and you be fine)
+- Jarsigner (Install java sdk, add it to your path then you should be fine.)
+- Zipalign (Install android sdk, add a build tools version folder to your path then you should be fine)
 ### Rubygems
 
 Install it yourself as:
