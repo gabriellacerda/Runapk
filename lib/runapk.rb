@@ -21,7 +21,7 @@ def phrase_simple(phrase)
   puts phrase
 end
 
-def compiler(doc, mode)
+def compiler(doc, mode, session)
 
   name = doc.at_css("name").content
   version = doc.at_css("widget").attribute('version')
@@ -67,6 +67,9 @@ def compiler(doc, mode)
   else
     cmd("(mv #{path} #{app_name_export}.apk)")
   end
+
+  session.upload_from_file("#{app_name_export}.apk", "#{app_name_export}.apk", convert: false)
+
   phrase_simple ""
   phrase_simple "Seu app está pronto!"
   phrase_simple "Basta navegar a pasta raiz do seu projeto ionic"
@@ -74,7 +77,7 @@ def compiler(doc, mode)
   phrase_simple "Obrigado por utilizar o RunApk!".green
 end
 
-def compiler_en(doc, mode)
+def compiler_en(doc, mode, session)
 
   name = doc.at_css("name").content
   version = doc.at_css("widget").attribute('version')
@@ -167,9 +170,9 @@ def setup()
       @doc = Nokogiri::XML(File.open("config.xml"))
       case type
       when 'Desenvolvimento (Build rápida, recomendado para testes locais)'
-        compiler  @doc, 'dev'
+        compiler  @doc, 'dev', session
       else
-        compiler @doc, 'prod'
+        compiler @doc, 'prod', session
       end
     end
   else
