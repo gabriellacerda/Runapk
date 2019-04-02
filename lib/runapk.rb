@@ -4,6 +4,8 @@ require 'colorator'
 require 'nokogiri'
 require 'securerandom'
 require "google_drive"
+require 'pathname'
+require 'open-uri'
 
 def cmd(cmd)
     IO.popen("#{cmd}").each do |line|
@@ -53,6 +55,14 @@ def publish_to_drive(session, file, name)
                     .subcollection_by_title(name)
                       .human_url()
   return share_url
+end
+
+def download_config_file
+  if !File.exist?('config.json')
+    File.open('config.json', "wb") do |file|
+      file.write open('https://raw.githubusercontent.com/gabriellacerda/runapk/master/config.json').read
+    end
+  end
 end
 
 def compiler(doc, mode, session)
@@ -179,6 +189,8 @@ def setup()
       # phrase_simple 'Hey you want to skip, sure!'
   end
 
+  download_config_file()
+
   phrase_simple ""
   phrase_simple "============================================".green + "".blue + "===========================".green + "".blue
   phrase_simple "==                                         ".green + "".blue + "                          ==".green + "".blue
@@ -207,6 +219,8 @@ def setup()
 
     session = GoogleDrive::Session.from_config("config.json")
 
+    phrase_simple ""
+    phrase_simple "[INFO] Suas credenciais de acesso do Google Drive ficam armazenadas no arquivo 'config.json' na pasta raiz do seu projeto, caso queira mudar de conta basta deletar ele 😄".green
     phrase_simple ""
 
     platform = prompt.select("👩‍🚀 Para qual plataform você deseja exportar?", %w(Android))
@@ -240,6 +254,8 @@ def setup()
 
     session = GoogleDrive::Session.from_config("config.json")
 
+    phrase_simple ""
+    phrase_simple "[INFO] Your Google Drive access credentials are stored in the 'config.json' file in the root folder of your project, if you want to switch accounts just delete it 😄".green
     phrase_simple ""
 
     platform = prompt.select("👩‍🚀 For which plataform you want to export?", %w(Android))
