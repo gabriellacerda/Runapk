@@ -21,6 +21,40 @@ def phrase_simple(phrase)
   puts phrase
 end
 
+def publish_to_drive(session, file, name)
+  file = session.upload_from_file("#{file}", "#{file}", convert: false)
+  folder = session.collection_by_title("runapk")
+  if folder.nil?
+    session
+      .root_collection.create_subcollection("runapk")
+        .create_subcollection("deploy")
+          .create_subcollection(name)
+            .add(file)
+    session.root_collection.remove(file)
+    # Add folder permissions
+    session.collection_by_title("runapk")
+      .acl.push({type: "anyone", role: "reader", allow_file_discovery: true})
+  else
+    folder.delete(permanent = true)
+    session
+      .root_collection.create_subcollection("runapk")
+        .create_subcollection("deploy")
+          .create_subcollection(name)
+            .add(file)
+    session.root_collection.remove(file)
+    # Add folder permissions
+    session.collection_by_title("runapk")
+      .acl.push({type: "anyone", role: "reader", allow_file_discovery: true})
+  end
+
+  share_url = session
+                .collection_by_title("runapk")
+                  .subcollection_by_title("deploy")
+                    .subcollection_by_title(name)
+                      .human_url()
+  return share_url
+end
+
 def compiler(doc, mode, session)
 
   name = doc.at_css("name").content
@@ -68,10 +102,12 @@ def compiler(doc, mode, session)
     cmd("(mv #{path} #{app_name_export}.apk)")
   end
 
-  session.upload_from_file("#{app_name_export}.apk", "#{app_name_export}.apk", convert: false)
+  share_url = publish_to_drive(session, "#{app_name_export}.apk", name)
 
   phrase_simple ""
   phrase_simple "Seu app está pronto!"
+  phrase_simple "O nome do seu app é: #{app_name_export}.apk".green
+  phrase_simple "Link compartilhável do Google Drive: #{share_url}".blue
   phrase_simple "Basta navegar a pasta raiz do seu projeto ionic"
   phrase_simple ""
   phrase_simple "Obrigado por utilizar o RunApk!".green
@@ -124,13 +160,16 @@ def compiler_en(doc, mode, session)
     cmd("(mv #{path} #{app_name_export}.apk)")
   end
 
-  session.upload_from_file("#{app_name_export}.apk", "#{app_name_export}.apk", convert: false)
+  share_url = publish_to_drive(session, "#{app_name_export}.apk", name)
 
   phrase_simple ""
   phrase_simple "Your app is ready!"
-  phrase_simple "Just browse the root folder of your ionic project"
+  phrase_simple "Your app name is: #{app_name_export}.apk".green
+  phrase_simple "Your app is stored here on google drive: /runapk/#{name}/#{app_name_export}.apk"
+  phrase_simple "🍪 Google Drive share link: #{share_url}".blue
   phrase_simple ""
-  phrase_simple "Thanks for using RunApk!".green
+  phrase_simple ""
+  phrase_simple "🍟 Thanks for using Runapk!".green
 end
 
 
@@ -139,8 +178,6 @@ def setup()
     when 'skip'
       # phrase_simple 'Hey you want to skip, sure!'
   end
-
-  session = GoogleDrive::Session.from_config("config.json")
 
   phrase_simple ""
   phrase_simple "============================================".green + "".blue + "===========================".green + "".blue
@@ -156,9 +193,22 @@ def setup()
 
   case lang
   when 'Português Brasil'
+
     phrase_simple ""
-    phrase_simple '👩‍🚀  Brr Dr, ei onde está o meu comp... 👩‍🚀'.white
+    phrase_simple '☁️  O suporte ao Google Drive chegou! Esperamos que você adore! ☁️'.cyan
     phrase_simple ""
+    phrase_simple "Saudações! Agora o seu apk gerado é enviado automaticamente a sua conta do Google Drive, sem clicks adicionais, direto ao ponto!".blue
+    phrase_simple ""
+    phrase_simple "para tirar proveito deste novo recurso você precisa permitir que o Runapk tenha acesso a sua conta, isso só acontece uma vez...".blue
+    phrase_simple ""
+    phrase_simple "🍿🤩  E... Ao final do processo de compilação do seu apk você vai receber o link de compartilhamento dele para utilizar como quiser... É só isso, um grande abraço da equipe do Runapk!".blue
+    phrase_simple ""
+    phrase_simple "Caso você já tenha autorizado o runapk, ignore".magenta
+
+    session = GoogleDrive::Session.from_config("config.json")
+
+    phrase_simple ""
+
     platform = prompt.select("👩‍🚀 Para qual plataform você deseja exportar?", %w(Android))
     phrase_simple ""
     type = prompt.select("👩‍🚀 Que tipo de apk você deseja?", ['Desenvolvimento (Build rápida, recomendado para testes locais)', 'Produção (Inclui todas as otimizações necessárias para exportar o app para a Play Store ou Apple Store) Se for para android, você vai precisar de uma keystore: https://runapk.page.link/keystore'])
@@ -176,9 +226,22 @@ def setup()
       end
     end
   else
+
     phrase_simple ""
-    phrase_simple '👩‍🚀  Brr Dr, where is my comp... 👩‍🚀'.white
+    phrase_simple '☁️ Google Drive support has arrived! We hope you love it! ☁️'.cyan
     phrase_simple ""
+    phrase_simple "Greetings! Now your generated apk is automatically sent to your Google Drive account, without additional clicks, to the point!".blue
+    phrase_simple ""
+    phrase_simple "to take advantage of this new feature you need to allow Runapk to access your account, this only happens once ...". blue
+    phrase_simple ""
+    phrase_simple "🍿🤩 And ... At the end of the process of compiling your apk you will receive the sharing link of it to use as you wish ... That's it, a big hug from the Runapk team!". blue
+    phrase_simple ""
+    phrase_simple "If you have already authorized runapk, ignore" .magenta
+
+    session = GoogleDrive::Session.from_config("config.json")
+
+    phrase_simple ""
+
     platform = prompt.select("👩‍🚀 For which plataform you want to export?", %w(Android))
     phrase_simple ""
     type = prompt.select("👩‍🚀 What kind of apk do you want?", ["Development (Fast build, recommended for local testing)", "Production (Includes all the optimizations needed to export the app to the Play Store or Apple Store) If it's for android, you'll need a keystore: https://runapk.page.link/keystore"])
