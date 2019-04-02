@@ -31,8 +31,8 @@ Just run ``runapk`` :D and you're ready to go!
 - Cordova
 - Ionic CLI
 - Ruby
-- Jarsigner (Install java sdk, add it to your path and you be fine)
-- Zipalign (Install android sdk, add a build tools version folder to your path and you be fine)
+- Jarsigner (Install java sdk, add it to your path then you should be fine.)
+- Zipalign (Install android sdk, add a build tools version folder to your path then you should be fine)
 ### Rubygems
 
 Install it yourself as:
@@ -45,7 +45,7 @@ gem install Runapk
 
 1. Generate a Keystore
 
-> If your already have a kestore skip to step 3
+> If your already have a kestore skip to step 2
 
 ```
 keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
@@ -56,9 +56,6 @@ keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg R
 ```
 runapk
 ```
-
-## Common errors
-If you get error with jarsigner try changing the app ionic version, from 3 to 1 and virse versa.
 
 ## Development
 
