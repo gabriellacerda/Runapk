@@ -2,6 +2,7 @@ require "runapk/version"
 require 'tty-prompt'
 require 'colorator'
 require 'nokogiri'
+require 'securerandom'
 
 def cmd(cmd)
     IO.popen("#{cmd}").each do |line|
@@ -26,8 +27,7 @@ def compiler(doc, mode)
   phrase_simple 'Nome do app: ' + name.blue
   phrase_simple 'Versão do app: ' + version
   phrase_simple ""
-  app_name_export = name + '-' + version
-  app_name_export = app_name_export.gsub!(/\s/, '')
+  app_name_export = "#{name}-#{version}-#{SecureRandom.hex(10)}"
   end_app_phrase = "O seu apk vai se chamar: ".white + "#{app_name_export}.apk".blue
   phrase_simple end_app_phrase
 
@@ -80,8 +80,7 @@ def compiler_en(doc, mode)
   phrase_simple 'App name: ' + name.blue
   phrase_simple 'App version: ' + version
   phrase_simple ""
-  app_name_export = name + '-' + version
-  app_name_export = app_name_export.gsub!(/\s/, '')
+  app_name_export = "#{name}-#{version}-#{SecureRandom.hex(10)}"
   end_app_phrase = "Your apk will be called: ".white + "#{app_name_export}.apk".blue
   phrase_simple end_app_phrase
 
