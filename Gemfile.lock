@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    Runapk (3.2.1)
+    Runapk (3.3.0)
 
 GEM
   remote: https://rubygems.org/
