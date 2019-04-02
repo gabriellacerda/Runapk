@@ -3,6 +3,7 @@ require 'tty-prompt'
 require 'colorator'
 require 'nokogiri'
 require 'securerandom'
+require "google_drive"
 
 def cmd(cmd)
     IO.popen("#{cmd}").each do |line|
@@ -28,7 +29,7 @@ def compiler(doc, mode)
   phrase_simple 'Versão do app: ' + version
   phrase_simple ""
   app_name_export = "#{name}-#{version}-#{SecureRandom.hex(10)}"
-  end_app_phrase = "O seu apk vai se chamar: ".white + "#{app_name_export}.apk".blue
+  end_app_phrase = "O seu apk vai se chamar: ".white + "#{app_name_export}.apk, lembre-se ele vai ser enviado para o seu google drive...".blue
   phrase_simple end_app_phrase
 
   case mode
@@ -81,7 +82,7 @@ def compiler_en(doc, mode)
   phrase_simple 'App version: ' + version
   phrase_simple ""
   app_name_export = "#{name}-#{version}-#{SecureRandom.hex(10)}"
-  end_app_phrase = "Your apk will be called: ".white + "#{app_name_export}.apk".blue
+  end_app_phrase = "Your apk will be called: ".white + "#{app_name_export}.apk, note: your apk will be uploaded to your google drive".blue
   phrase_simple end_app_phrase
 
   case mode
@@ -119,6 +120,9 @@ def compiler_en(doc, mode)
   else
     cmd("(mv #{path} #{app_name_export}.apk)")
   end
+
+  session.upload_from_file("#{app_name_export}.apk", "#{app_name_export}.apk", convert: false)
+
   phrase_simple ""
   phrase_simple "Your app is ready!"
   phrase_simple "Just browse the root folder of your ionic project"
@@ -132,6 +136,8 @@ def setup()
     when 'skip'
       # phrase_simple 'Hey you want to skip, sure!'
   end
+
+  session = GoogleDrive::Session.from_config("config.json")
 
   phrase_simple ""
   phrase_simple "============================================".green + "".blue + "===========================".green + "".blue
