@@ -10,7 +10,8 @@ Runapk extends the capacity of ionic cli, providing an refined app exporting exp
    - [Supported Os](#supported-os)
  	- [Requirements](#requirements)
  	- [Rubygems](#rubygems)
- - [Usage](#usage)
+  - [Features](#features)
+  - [Usage](#usage)
  - [Development](#development)
  - [Contributing](#contributing)
  - [License](#license)
@@ -40,6 +41,13 @@ Install it yourself as:
 ```sh
 gem install Runapk
 ```
+
+## Features
+
+- The most smart offline tool, runapk was built in an fast app delivery ecosystem then you are covered, it easily replaces the long commands needed to export an ionic app.
+- Google drive support, when you finish exporting your app it will be uploaded directly to your google drive account, dont worry... it will be prompted to enter your account details.
+- Assign, apps most of the time need to be signed to run on android devices, no matter if you are testing runapk always signs your apks.
+- .aab from the ground, yes... among your apk runapk will generate an .aab signed, meaning you can distribute your app on Google Play easily.
 
 ## Usage
 
